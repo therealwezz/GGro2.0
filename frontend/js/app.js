@@ -276,6 +276,7 @@ analyzeBtn.addEventListener('click', async () => {
     const result = await callBackend();
     state.analysisResult = result;
     displayResults(result);
+    showFollowupPanel(result);
     showToast('Analysis complete!', 'success');
   } catch (err) {
     console.error('Analysis error:', err);
@@ -1191,10 +1192,3 @@ if (chatInput) {
 
 // Voice input for chat
 if (chatVoiceBtn) createVoiceRecognizer('chatInput', chatVoiceBtn, true);
-
-// Hook into displayResults to reveal the chat panel after diagnosis
-const _originalDisplayResults = displayResults;
-function displayResults(result) {
-  _originalDisplayResults(result);
-  showFollowupPanel(result);
-}
