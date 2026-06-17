@@ -228,11 +228,20 @@
               </div>
               <div class="form-group" style="margin-top: 1rem">
                 <label>Additional notes (optional)</label>
-                <textarea
-                  id="cameraNotes"
-                  rows="2"
-                  placeholder="Any extra details about the plant or symptoms..."
-                ></textarea>
+                <div class="voice-row">
+                  <textarea
+                    id="cameraNotes"
+                    rows="2"
+                    placeholder="Any extra details about the plant or symptoms..."
+                  ></textarea>
+                  <button
+                    class="voice-btn"
+                    id="voiceCameraBtn"
+                    title="Tap to speak your notes"
+                  >
+                    <i class="fas fa-microphone"></i>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -284,11 +293,20 @@
               </div>
               <div class="form-group">
                 <label>Describe the symptoms <span class="req">*</span></label>
-                <textarea
-                  id="symptomsText"
-                  rows="5"
-                  placeholder="Describe what you see: colour changes, spots, wilting, unusual growth, smell, texture changes..."
-                ></textarea>
+                <div class="voice-row">
+                  <textarea
+                    id="symptomsText"
+                    rows="5"
+                    placeholder="Describe what you see: colour changes, spots, wilting, unusual growth, smell, texture changes..."
+                  ></textarea>
+                  <button
+                    class="voice-btn"
+                    id="voiceSymptomsBtn"
+                    title="Tap to speak your symptoms"
+                  >
+                    <i class="fas fa-microphone"></i>
+                  </button>
+                </div>
               </div>
               <div class="form-group">
                 <label>How long have you noticed this?</label>
@@ -423,6 +441,40 @@
             </div>
           </div>
         </div>
+
+        <!-- ══ FOLLOW-UP CHAT ══ -->
+        <div class="followup-panel hidden" id="followupPanel">
+          <div class="followup-header">
+            <h4><i class="fas fa-comments"></i> Ask a Follow-Up Question</h4>
+            <span class="followup-badge">AI CHAT</span>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-bubble bot">
+              <span
+                >Hi! I just analyzed your plant. Feel free to ask me anything
+                about the diagnosis, treatment, dosage, or next steps. 🌱</span
+              >
+              <span class="chat-meta">Gro AI</span>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <textarea
+              id="chatInput"
+              rows="1"
+              placeholder="Ask a question about your plant..."
+            ></textarea>
+            <button
+              class="chat-voice-btn"
+              id="chatVoiceBtn"
+              title="Speak your question"
+            >
+              <i class="fas fa-microphone"></i>
+            </button>
+            <button class="chat-send-btn" id="chatSendBtn" title="Send">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -433,9 +485,9 @@
           <div class="about-text">
             <h2>Built for African Farmers</h2>
             <p>
-              PlantDoc was designed with smallholder farmers in mind —
-              especially those in Cameroon and across sub-Saharan Africa where
-              crop disease can devastate an entire season's income.
+              Gro was designed with smallholder farmers in mind — especially
+              those in Cameroon and across sub-Saharan Africa where crop disease
+              can devastate an entire season's income.
             </p>
             <p>
               By combining state-of-the-art AI vision technology with local
@@ -458,10 +510,7 @@
             <div class="about-stat-card">
               <i class="fas fa-globe-africa"></i>
               <h4>Made in Cameroon</h4>
-              <p>
-                Built by students of the University of Buea for local
-                agricultural needs.
-              </p>
+              <p>Built by Inno Hub for local agricultural needs.</p>
             </div>
             <div class="about-stat-card">
               <i class="fas fa-shield-alt"></i>
@@ -490,8 +539,8 @@
     <footer class="footer">
       <div class="container">
         <div class="footer-brand"><i class="fas fa-seedling"></i> Gro</div>
-        <p>©wezdam 2026</p>
-        <p class="footer-small">Powered by WEZARD AI · Built by WEZ</p>
+        <p>©Inno Hub 2026</p>
+        <p class="footer-small">Powered by Wezdam · Built by Inno Hub</p>
       </div>
     </footer>
 

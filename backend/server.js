@@ -168,6 +168,48 @@ app.post('/api/analyze', async (req, res) => {
   }
 });
 
+
+// ── FOLLOW-UP CHAT ENDPOINT ───────────────
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { messages } = req.body;
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ error: 'No messages provided' });
+    }
+
+    // Build Gemini contents from chat history
+    // First message is our context-primer (user role), second is assistant ack,
+    // then the rest is the real conversation
+    const systemContext = messages[0]?.content || '';
+    const conversation = messages.slice(2); // skip context + ack
+
+    // Build a single string: system context + turn-by-turn dialogue
+    let prompt = `You are Gro, a friendly and knowledgeable plant disease AI assistant for Cameroonian farmers.
+${systemContext}
+
+Conversation so far:
+`;
+    for (const msg of conversation) {
+      const role = msg.role === 'user' ? 'Farmer' : 'Gro AI';
+      prompt += `${role}: ${msg.content}\n`;
+    }
+    prompt += 'Gro AI:';
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [{ text: prompt }],
+    });
+
+    const reply = (response.text || '').trim();
+    res.json({ reply });
+
+  } catch (err) {
+    console.error('Chat error:', err);
+    res.status(500).json({ error: 'Chat error: ' + err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(
     `PlantDoc server running on port ${PORT}`

@@ -6,11 +6,9 @@
 // ── CONFIG ────────────────────────────────
 // When hosted, this points to your backend server.
 // For local testing with Live Server, change to 'http://localhost:3000'
-const API_BASE =
-  window.location.hostname === 'localhost' ||
-  window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:3000'
-    : 'https://ggro2-0.onrender.com';  // empty = same domain (for Render hosting)
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3000'
+  : '';  // empty = same domain (for Render hosting)
 
 // ── STATE ─────────────────────────────────
 const state = {
@@ -954,3 +952,249 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 
 // Stop camera if user leaves the page
 window.addEventListener('beforeunload', stopCamera);
+
+// ══════════════════════════════════════════
+//   FEATURE 1 — VOICE INPUT
+//   Uses Web Speech API (SpeechRecognition)
+// ══════════════════════════════════════════
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+function createVoiceRecognizer(targetId, btnEl, appendMode = false) {
+  if (!SpeechRecognition) {
+    btnEl.title = 'Voice input not supported in this browser';
+    btnEl.style.opacity = '0.4';
+    btnEl.style.cursor = 'not-allowed';
+    btnEl.addEventListener('click', () => {
+      showToast('Voice not supported. Try Chrome or Edge.', 'error');
+    });
+    return null;
+  }
+
+  const rec = new SpeechRecognition();
+  rec.lang = 'en-US';
+  rec.interimResults = true;
+  rec.maxAlternatives = 1;
+  rec.continuous = false;
+
+  let listening = false;
+  let finalTranscript = '';
+
+  btnEl.addEventListener('click', () => {
+    if (listening) {
+      rec.stop();
+      return;
+    }
+    finalTranscript = appendMode ? '' : '';
+    rec.start();
+  });
+
+  rec.onstart = () => {
+    listening = true;
+    btnEl.classList.add('listening');
+    btnEl.innerHTML = '<i class="fas fa-stop"></i>';
+    btnEl.title = 'Tap to stop recording';
+    showToast('🎙️ Listening… speak now', 'success');
+  };
+
+  rec.onresult = (e) => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) finalTranscript += t + ' ';
+      else interim = t;
+    }
+    const el = document.getElementById(targetId);
+    if (el) {
+      const base = appendMode ? (el.value ? el.value.trimEnd() + ' ' : '') : '';
+      el.value = base + finalTranscript + interim;
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
+    }
+  };
+
+  rec.onerror = (e) => {
+    listening = false;
+    resetVoiceBtn(btnEl);
+    if (e.error === 'not-allowed') showToast('Microphone access denied.', 'error');
+    else if (e.error === 'no-speech') showToast('No speech detected. Try again.', 'error');
+    else showToast(`Voice error: ${e.error}`, 'error');
+  };
+
+  rec.onend = () => {
+    listening = false;
+    resetVoiceBtn(btnEl);
+    const el = document.getElementById(targetId);
+    if (el && finalTranscript.trim()) {
+      el.value = (appendMode && el.value ? el.value.trimEnd() + ' ' : '') + finalTranscript.trim();
+      showToast('✅ Voice captured!', 'success');
+    }
+  };
+
+  return rec;
+}
+
+function resetVoiceBtn(btn) {
+  btn.classList.remove('listening');
+  btn.innerHTML = '<i class="fas fa-microphone"></i>';
+  btn.title = 'Tap to speak';
+}
+
+// Wire up voice buttons on the text & camera tabs
+const voiceSymptomsBtn = document.getElementById('voiceSymptomsBtn');
+const voiceCameraBtn   = document.getElementById('voiceCameraBtn');
+if (voiceSymptomsBtn) createVoiceRecognizer('symptomsText', voiceSymptomsBtn, false);
+if (voiceCameraBtn)   createVoiceRecognizer('cameraNotes',  voiceCameraBtn,   false);
+
+
+// ══════════════════════════════════════════
+//   FEATURE 2 — FOLLOW-UP CHAT
+// ══════════════════════════════════════════
+
+const followupPanel  = document.getElementById('followupPanel');
+const chatMessages   = document.getElementById('chatMessages');
+const chatInput      = document.getElementById('chatInput');
+const chatSendBtn    = document.getElementById('chatSendBtn');
+const chatVoiceBtn   = document.getElementById('chatVoiceBtn');
+
+// Conversation history sent to the AI each time (includes context)
+let chatHistory = [];
+
+// Show the follow-up panel once a diagnosis is ready
+function showFollowupPanel(analysisResult) {
+  if (!followupPanel) return;
+
+  // Prime the history with diagnosis context so the AI knows what was found
+  const diseaseName = analysisResult?.disease?.name || 'unknown disease';
+  const meds = (analysisResult?.medications || []).map(m => m.name).join(', ') || 'none listed';
+  const urgency = analysisResult?.urgency || 'unknown';
+
+  chatHistory = [
+    {
+      role: 'user',
+      content: `Context: You are Gro, an AI plant disease assistant. The user just received this diagnosis:
+- Disease: ${diseaseName}
+- Urgency: ${urgency}
+- Recommended medications: ${meds}
+- Treatment summary: ${JSON.stringify(analysisResult?.treatment || {})}
+
+Answer the user's follow-up questions helpfully and concisely. Stay focused on plant health, treatment, and agronomy. If asked something unrelated, gently redirect. Respond in the same language the user writes in.`,
+    },
+    {
+      role: 'assistant',
+      content: `Understood. I have the diagnosis context for ${diseaseName} and I'm ready to answer follow-up questions.`,
+    },
+  ];
+
+  // Reset visible messages to a fresh greeting referencing the disease
+  chatMessages.innerHTML = `
+    <div class="chat-bubble bot">
+      <span>I've finished diagnosing your plant. It looks like <strong>${diseaseName}</strong>. Do you have any questions about the treatment, dosage, or what to do next? 🌿</span>
+      <span class="chat-meta">Gro AI</span>
+    </div>`;
+
+  followupPanel.classList.remove('hidden');
+  followupPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Append a message bubble to the chat
+function appendChatBubble(role, text) {
+  const div = document.createElement('div');
+  div.className = `chat-bubble ${role}`;
+  const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  div.innerHTML = `<span>${text.replace(/\n/g, '<br>')}</span><span class="chat-meta">${role === 'user' ? 'You' : 'Gro AI'} · ${now}</span>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return div;
+}
+
+// Show animated typing indicator
+function showTypingIndicator() {
+  const div = document.createElement('div');
+  div.className = 'chat-bubble bot typing';
+  div.id = 'typingIndicator';
+  div.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+// Send a chat message to the backend and get a reply
+async function sendChatMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  chatInput.value = '';
+  chatInput.style.height = 'auto';
+  chatSendBtn.disabled = true;
+
+  // Add user bubble
+  appendChatBubble('user', text);
+
+  // Add to history
+  chatHistory.push({ role: 'user', content: text });
+
+  // Show typing dots
+  showTypingIndicator();
+
+  try {
+    const response = await fetch(`${API_BASE}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatHistory }),
+    });
+
+    removeTypingIndicator();
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || `Server error ${response.status}`);
+    }
+
+    const data = await response.json();
+    const reply = data.reply || 'Sorry, I could not generate a response.';
+
+    // Add assistant reply to history and UI
+    chatHistory.push({ role: 'assistant', content: reply });
+    appendChatBubble('bot', reply);
+
+  } catch (err) {
+    removeTypingIndicator();
+    appendChatBubble('bot', `⚠️ Error: ${err.message}. Please check your connection and try again.`);
+  } finally {
+    chatSendBtn.disabled = false;
+    chatInput.focus();
+  }
+}
+
+// Send on button click
+if (chatSendBtn) chatSendBtn.addEventListener('click', sendChatMessage);
+
+// Send on Enter key (Shift+Enter = new line)
+if (chatInput) {
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendChatMessage();
+    }
+  });
+  // Auto-resize textarea
+  chatInput.addEventListener('input', () => {
+    chatInput.style.height = 'auto';
+    chatInput.style.height = Math.min(chatInput.scrollHeight, 100) + 'px';
+  });
+}
+
+// Voice input for chat
+if (chatVoiceBtn) createVoiceRecognizer('chatInput', chatVoiceBtn, true);
+
+// Hook into displayResults to reveal the chat panel after diagnosis
+const _originalDisplayResults = displayResults;
+function displayResults(result) {
+  _originalDisplayResults(result);
+  showFollowupPanel(result);
+}
