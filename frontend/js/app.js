@@ -778,7 +778,7 @@ function findNearestCity(lat, lng) {
 function buildWhatsAppMessage(storeName, analysisResult) {
   const disease = analysisResult?.disease?.name || 'plant disease';
   const meds = (analysisResult?.medications || []).map(m => m.name).join(', ') || 'treatment chemicals';
-  const msg = `Bonjour ${storeName}! J'ai besoin de traitement pour ${disease}. Est-ce que vous avez: ${meds}? Merci!`;
+  const msg = `Hello ${storeName}! I need treatment for ${disease}. Please do you have: ${meds} in store? Thank you!`;
   return encodeURIComponent(msg);
 }
 
