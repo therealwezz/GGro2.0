@@ -4,11 +4,11 @@
 ═══════════════════════════════════════════ */
 
 // ── CONFIG ────────────────────────────────
-// When hosted, this points to your backend server.
-// For local testing with Live Server, change to 'http://localhost:3000'
+// API base URL — automatically picks the right address
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:3000'      // local development
   : 'https://ggro2-0.onrender.com'; // production (Render) // empty = same domain (for Render hosting)
+
 
 // ── STATE ─────────────────────────────────
 const state = {

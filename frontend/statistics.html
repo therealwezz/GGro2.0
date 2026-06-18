@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gro — Agricultural Statistics</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/statistics.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  </head>
+  <body class="stats-body">
+
+    <!-- ═══════════ NAVBAR ═══════════ -->
+    <nav class="navbar">
+      <div class="nav-brand">
+        <i class="fas fa-seedling"></i>
+        <span>Gro</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#detect">Detect</a></li>
+        <li><a href="index.html#how">How It Works</a></li>
+        <li><a href="statistics.html" class="nav-active">Statistics</a></li>
+        <li><a href="index.html#about">About</a></li>
+      </ul>
+      <div class="nav-badge">WEZDAM</div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <!-- ═══════════ HERO BANNER ═══════════ -->
+    <section class="stats-hero">
+      <div class="stats-hero-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+      </div>
+      <div class="stats-hero-content">
+        <div class="stats-hero-tag">
+          <i class="fas fa-chart-bar"></i> Data & Insights
+        </div>
+        <h1>Cameroon Agriculture<br /><span class="gradient-text">Statistics</span></h1>
+        <p>Understanding the crop crisis driving the need for AI-powered plant disease detection in Cameroon's farming communities.</p>
+        <div class="stats-hero-pills">
+          <span><i class="fas fa-map-marker-alt"></i> South West Region</span>
+          <span><i class="fas fa-calendar"></i> 2018 – 2026</span>
+          <span><i class="fas fa-leaf"></i> Crop Production Data</span>
+        </div>
+      </div>
+      <a href="index.html#detect" class="stats-hero-cta">
+        <i class="fas fa-microscope"></i> Diagnose Your Plant Now
+      </a>
+    </section>
+
+    <!-- ═══════════ KEY NUMBERS ═══════════ -->
+    <section class="key-numbers">
+      <div class="stats-container">
+        <div class="kn-grid">
+          <div class="kn-card">
+            <div class="kn-icon" style="background:#fee2e2;color:#dc2626;">
+              <i class="fas fa-arrow-trend-down"></i>
+            </div>
+            <div class="kn-value" data-target="30">0%</div>
+            <div class="kn-label">of crop decline caused by pests & plant infections</div>
+          </div>
+          <div class="kn-card">
+            <div class="kn-icon" style="background:#fef9c3;color:#ca8a04;">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <div class="kn-value" data-target="65">0</div>
+            <div class="kn-label">current production index in Buea (pre-crisis baseline: 100)</div>
+          </div>
+          <div class="kn-card">
+            <div class="kn-icon" style="background:#dcfce7;color:#16a34a;">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="kn-value" data-target="108.9">0</div>
+            <div class="kn-label">Cameroon's all-time national production index peak (2020)</div>
+          </div>
+          <div class="kn-card">
+            <div class="kn-icon" style="background:#dbeafe;color:#2563eb;">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="kn-value" data-target="70">0%</div>
+            <div class="kn-label">of crop decline driven by insecurity, costs & climate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ CHARTS SECTION ═══════════ -->
+    <section class="charts-section">
+      <div class="stats-container">
+
+        <div class="section-header">
+          <h2>Research Data</h2>
+          <p>Regional and national estimates based on recent agricultural trends</p>
+        </div>
+
+        <!-- Chart 1 — Pie Chart (full width) -->
+        <div class="chart-block chart-full">
+          <div class="chart-label-strip">
+            <div class="chart-label-dot" style="background:#ef4444;"></div>
+            <span>South West Region — Crop Decline Drivers</span>
+          </div>
+          <div class="chart-card">
+            <div class="chart-inner">
+              <img
+                src="images/stat-pie.png"
+                alt="South West Region Cameroon: Crop Production Decline Drivers pie chart showing 30% pests and plant infections, 70% other factors"
+                class="chart-img"
+              />
+            </div>
+            <div class="chart-insight">
+              <div class="insight-icon" style="background:#fee2e2;">
+                <i class="fas fa-bug" style="color:#dc2626;"></i>
+              </div>
+              <div>
+                <h4>Key Finding</h4>
+                <p>Pests and plant infections alone account for <strong>30% of all crop production decline</strong> in the South West Region — a problem directly addressed by Gro's AI diagnosis tool.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts 2 & 3 — side by side -->
+        <div class="chart-grid-two">
+
+          <!-- Chart 2 — Buea trend -->
+          <div class="chart-block">
+            <div class="chart-label-strip">
+              <div class="chart-label-dot" style="background:#dc2626;"></div>
+              <span>Buea — Crop Production Index (2018–2026)</span>
+            </div>
+            <div class="chart-card">
+              <div class="chart-inner">
+                <img
+                  src="images/stat-buea.png"
+                  alt="Estimated Crop Production Index Trend for Buea showing decline from 85 in 2018 to around 66 in 2026, all within the severe production deficit zone below 80"
+                  class="chart-img"
+                />
+              </div>
+              <div class="chart-insight">
+                <div class="insight-icon" style="background:#fee2e2;">
+                  <i class="fas fa-triangle-exclamation" style="color:#dc2626;"></i>
+                </div>
+                <div>
+                  <h4>Severe Deficit Zone</h4>
+                  <p>Buea has been stuck in the <strong>severe production deficit zone</strong> since 2018, dropping from an index of 85 to just 66 by 2026.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 3 — National trend -->
+          <div class="chart-block">
+            <div class="chart-label-strip">
+              <div class="chart-label-dot" style="background:#16a34a;"></div>
+              <span>Cameroon National — Crop Production Index (2018–2026)</span>
+            </div>
+            <div class="chart-card">
+              <div class="chart-inner">
+                <img
+                  src="images/stat-cameroon.png"
+                  alt="Cameroon Domestic Crop Production Index Trend showing growth from 105 in 2018 peaking at 108.9 in 2020 then slowly declining to around 107.5 in 2026"
+                  class="chart-img"
+                />
+              </div>
+              <div class="chart-insight">
+                <div class="insight-icon" style="background:#dcfce7;">
+                  <i class="fas fa-chart-line" style="color:#16a34a;"></i>
+                </div>
+                <div>
+                  <h4>National vs Regional Gap</h4>
+                  <p>While Cameroon's national index peaked at <strong>108.9 in 2020</strong>, the South West Region lags far behind — showing a stark local crisis within national growth.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════ WHY GRO SECTION ═══════════ -->
+    <section class="why-gro-section">
+      <div class="stats-container">
+        <div class="why-gro-inner">
+          <div class="why-gro-text">
+            <div class="stats-hero-tag" style="margin-bottom:1.25rem;">
+              <i class="fas fa-lightbulb"></i> The Solution
+            </div>
+            <h2>Why <span class="gradient-text">Gro</span> Was Built</h2>
+            <p>With 30% of crop decline in the South West directly caused by plant diseases and pests — and farmers lacking fast access to expert diagnosis — Gro uses AI to bridge the gap.</p>
+            <ul class="why-list">
+              <li>
+                <div class="why-icon"><i class="fas fa-bolt"></i></div>
+                <div>
+                  <strong>Instant diagnosis</strong>
+                  <span>Identify plant diseases in under 5 seconds from a photo or description</span>
+                </div>
+              </li>
+              <li>
+                <div class="why-icon"><i class="fas fa-prescription-bottle"></i></div>
+                <div>
+                  <strong>Treatment recommendations</strong>
+                  <span>Chemical, organic, and prevention plans tailored to the specific disease</span>
+                </div>
+              </li>
+              <li>
+                <div class="why-icon"><i class="fas fa-store"></i></div>
+                <div>
+                  <strong>Find agro-stores nearby</strong>
+                  <span>WhatsApp or call the nearest store with your treatment needs pre-filled</span>
+                </div>
+              </li>
+              <li>
+                <div class="why-icon"><i class="fas fa-microphone"></i></div>
+                <div>
+                  <strong>Voice-enabled</strong>
+                  <span>Farmers can speak their symptoms — no typing required</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="why-gro-cta-box">
+            <div class="cta-box-icon"><i class="fas fa-seedling"></i></div>
+            <h3>Try Gro Today</h3>
+            <p>Free to use. No app download needed. Works on any smartphone.</p>
+            <a href="index.html#detect" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1rem;">
+              <i class="fas fa-microscope"></i> Start Diagnosis
+            </a>
+            <a href="index.html" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:0.65rem;">
+              <i class="fas fa-home"></i> Back to Home
+            </a>
+            <div class="cta-box-stats">
+              <div><span>500+</span><p>Diseases</p></div>
+              <div class="stat-divider"></div>
+              <div><span>98%</span><p>Accuracy</p></div>
+              <div class="stat-divider"></div>
+              <div><span>&lt;5s</span><p>Response</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-brand"><i class="fas fa-seedling"></i> Gro</div>
+        <p>©wezdam 2026</p>
+        <p class="footer-small">Powered by WEZARD AI · Built by WEZ</p>
+      </div>
+    </footer>
+
+    <script>
+      // Hamburger menu
+      const hamburger = document.getElementById('hamburger');
+      hamburger.addEventListener('click', () => {
+        document.querySelector('.navbar').classList.toggle('menu-open');
+      });
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          document.querySelector('.navbar').classList.remove('menu-open');
+        });
+      });
+
+      // Animated counters on scroll
+      const counters = document.querySelectorAll('.kn-value');
+      const animateCounter = (el) => {
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.textContent.includes('%') ? '%' : '';
+        const isDecimal = target % 1 !== 0;
+        const duration = 1800;
+        const steps = 60;
+        const increment = target / steps;
+        let current = 0;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          el.textContent = (isDecimal ? current.toFixed(1) : Math.floor(current)) + suffix;
+        }, duration / steps);
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      counters.forEach(c => observer.observe(c));
+    </script>
+  </body>
+</html>
